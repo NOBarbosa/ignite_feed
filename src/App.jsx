@@ -4,16 +4,16 @@ import { SideBar } from "./components/SideBar/SideBar";
 import { Post } from "./components/Post/Post";
 
 function App() {
-
   return (
-    <div>
+    <>
       <Header />
       <div className={s.wrapper}>
         <SideBar />
-        <Post />
+        <Post/>
+        
       </div>
 
-    </div>
+    </>
   )
 }
 
