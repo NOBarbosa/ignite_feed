@@ -9,7 +9,11 @@ function App() {
       <Header />
       <div className={s.wrapper}>
         <SideBar />
-        <Post/>
+        <main>
+          <Post/>
+          <Post/>
+          <Post/>
+        </main>
         
       </div>
 
