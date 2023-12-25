@@ -1,29 +1,39 @@
+/* eslint-disable react/prop-types */
 import { Comment } from '../Comment/Comment';
 import s from './post.module.scss';
 import { Avatar } from '../Avatar/Avatar';
 
 
-export function Post(){
+export function Post({author,publishedAt, content}){
+    const publishedAtFormated = new Intl.DateTimeFormat('pt-Br', {
+        day: '2-digit',
+        month: 'long',
+        hour:'2-digit',
+        minute: '2-digit'
+    }).format(publishedAt)
+
     return(
         <article className={s.post}>
             <header>
                 <div className={s.author}>
-                    <Avatar src="https://github.com/NOBarbosa.png" />
+                    <Avatar src={author.avatarUrl} />
                      <div className={s.authorInfo}>
-                        <strong>Natalia Oliveira</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
 
-                <time title='23 de Dezembro às 22:27' dateTime='2023-12-23'>Públicado há 1h</time>
+                <time title='23 de Dezembro às 22:27' dateTime='2023-12-23'>Públicado em {publishedAtFormated}</time>
             </header>
 
             <div className={s.content}>
-                <p>Fala galeraa 👋 </p>
-
-                <p> Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀</p>
-
-               <p> <a href="#">👉 jane.design/doctorcare</a></p>
+                {content.map((item, i)=>{
+                        if(item.type=== "paragraph"){
+                            return <p key={i}>{item.content}</p>
+                        }else if(item.type=== "link"){
+                            return <a href='#' key={i}>{item.content}</a>
+                        }
+                })}
 
                 <p>
                 <a href="#">#novoprojeto </a>
