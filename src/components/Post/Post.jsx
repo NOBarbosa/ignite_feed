@@ -2,16 +2,45 @@
 import { Comment } from '../Comment/Comment';
 import s from './post.module.scss';
 import { Avatar } from '../Avatar/Avatar';
+import { useState } from 'react';
 
 
 export function Post({author,publishedAt, content}){
+
+    const [comments, setComments] = useState(["Amei o post!"])
+    const [newCommentText, setNewCommentText] = useState("")
+
+
     const publishedAtFormated = new Intl.DateTimeFormat('pt-Br', {
         day: '2-digit',
         month: 'long',
         hour:'2-digit',
         minute: '2-digit'
-    }).format(publishedAt)
+    }).format(publishedAt);
 
+    function handleCreateNewComment(){
+        event.preventDefault();
+        setComments([...comments, newCommentText])
+        setNewCommentText('')
+
+    }
+
+    function handleNewCommentChange(){
+        setNewCommentText(event.target.value)
+    }
+
+    function deleteComment(commentToDelete){
+        const commentsWithoutDeleted = comments.filter(comment =>{
+            return comment !== commentToDelete
+        })
+        setComments(commentsWithoutDeleted)
+    }
+
+    function handleNewCommentInvalid(){
+
+    }
+
+    
     return(
         <article className={s.post}>
             <header>
@@ -41,10 +70,15 @@ export function Post({author,publishedAt, content}){
                 <a href="#"> #rocketseat</a></p>
             </div>
 
-            <form className={s.comment}>
+            <form  onSubmit={handleCreateNewComment} className={s.comment}>
                 <strong>Deixe seu feedback</strong>
                 <textarea 
+                    name='comment'
+                    value={newCommentText}
                     placeholder='Deixe um comentário'
+                    onChange={handleNewCommentChange}
+                    onInvalid={handleNewCommentInvalid}
+                    required
                 />
                 <footer >
                     <button type='submit'>Publicar</button>
@@ -52,7 +86,9 @@ export function Post({author,publishedAt, content}){
             </form>
 
             <div className={s.commentList}>
-                <Comment />
+                {comments.map((comment,i)=>{
+                    return <Comment key={i} content={comment} onDeleteComment={deleteComment}/>
+                })}
             </div>
         </article>
     )
